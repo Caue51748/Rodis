@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 const API_URL = "https://rodis-5k4r.onrender.com/discord"; // coloque sua URL do Render
-const TOKEN = "MTQzNDgyMjcyMTkyMDk1ODU2Ng.Gm_yom._nw4vIJHQQyi5gjBV2J7y6ShzxoPZiItJYvTaM"; // token do bot do Discord
+const TOKEN = "MTQzNDgyMjcyMTkyMDk1ODU2Ng.GgCGqT.cftHhbTboU83ifOQ32iVyacHcv1nqN4HU9j59o"; // token do bot do Discord
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return; // ignora mensagens de outros bots
@@ -30,3 +30,4 @@ client.on('messageCreate', async (message) => {
 });
 
 client.login(TOKEN);
+
