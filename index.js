@@ -1,21 +1,32 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
+const { Client, GatewayIntentBits } = require('discord.js');
+const fetch = require('node-fetch');
 
-let lastMessage = { username: "", message: "" };
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds, 
+    GatewayIntentBits.GuildMessages, 
+    GatewayIntentBits.MessageContent
+  ]
+});
 
-app.post("/discord", (req, res) => {
-  const { username, message } = req.body;
-  if (username && message) {
-    lastMessage = { username, message };
-    console.log(`[Discord] ${username}: ${message}`);
+const API_URL = "https://rodis-5k4r.onrender.com/discord"; // coloque sua URL do Render
+const TOKEN = "MTQzNDgyMjcyMTkyMDk1ODU2Ng.Gm_yom._nw4vIJHQQyi5gjBV2J7y6ShzxoPZiItJYvTaM"; // token do bot do Discord
+
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return; // ignora mensagens de outros bots
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: message.author.username,
+        message: message.content
+      })
+    });
+    console.log(`[Discord] ${message.author.username}: ${message.content}`);
+  } catch (err) {
+    console.error(err);
   }
-  res.sendStatus(200);
 });
 
-app.get("/discord", (req, res) => {
-  res.json(lastMessage);
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+client.login(TOKEN);
